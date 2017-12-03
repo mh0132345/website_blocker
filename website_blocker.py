@@ -1,4 +1,5 @@
 import time
+import re
 from datetime import datetime as dt
 
 host_test = r"E:\IT Ebooks\code\web_blocker\hosts"
@@ -7,15 +8,14 @@ redirect = "127.0.0.1"
 block_file = r"E:\IT Ebooks\code\web_blocker\block.txt"
 
 with open(block_file,"r") as file:
-    website_list = [web.strip() for web in file.readlines()]
-    print(website_list)
-
+    website_list = [re.sub(r'https?://', '', web).strip().strip('/') if web.startswith('http') else web.strip() for web in file.readlines()]
+# print(website_list)
 while True:
     if dt(dt.now().year, dt.now().month, dt.now().day, 8) < dt.now() < dt(dt.now().year, dt.now().month, dt.now().day, 16):
         print("Working hour...")
         with open(host_path, 'r+') as file:
             content = file.read()
-            print(content)
+            # print(content)
             for website in website_list:
                 if website in content:
                     pass
